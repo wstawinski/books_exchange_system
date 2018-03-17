@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Zarejetruj się
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-6">
+        <form role="form" action="{% url 'user_register' %}" method="post">
+            {% csrf_token %}
+
+            <h3>Zarejestruj się</h3>
+
+            {{ form | crispy }}
+
+            <button type="submit" class="btn btn-default">Zarejestruj</button>
+        </form>
+    </div>
+
+{% endblock %}

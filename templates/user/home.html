@@ -1,9 +1,9 @@
-{% extends 'layout.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Profil użytkownika
 {% endblock %}
 
 {% block content %}
-    <h1>Witaj {tu będzie nazwa użytkownika}!</h1>
+    <h1>Witaj {{ user.username }}!</h1>
 {% endblock %}

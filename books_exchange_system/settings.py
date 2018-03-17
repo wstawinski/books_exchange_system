@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_user',
+    'crispy_forms',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,16 @@ WSGI_APPLICATION = 'books_exchange_system.wsgi.application'
 DATABASES = {
 
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'NAME': 'ziwg_testdb',
+        'USER': 'root',
+        'PASSWORD': 'password',
+
+    },
+
+    'secondary': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '89.70.176.12',
         'PORT': '3306',
@@ -131,3 +142,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+LOGIN_URL = 'user_login'
+LOGIN_REDIRECT_URL = 'user_home'
+LOGOUT_REDIRECT_URL = 'index'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
