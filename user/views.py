@@ -16,11 +16,11 @@ def register(request):
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()
-            user.profile.location = form.cleaned_data.get('location')
+            user.profile.location = form.cleaned_data['location']
             user_group = Group.objects.get(name='user')
             user.groups.add(user_group)
             user.save()
-            raw_password = form.cleaned_data.get('password1')
+            raw_password = form.cleaned_data['password1']
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
             return redirect('user_home')
