@@ -11,7 +11,7 @@
         <form role="form" action="{% url 'user_login' %}" method="post">
             {% csrf_token %}
 
-            <h3>Zaloguj się</h3>
+            <h2>Zaloguj się</h2>
 
             {{ form | crispy }}
 

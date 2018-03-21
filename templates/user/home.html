@@ -7,10 +7,18 @@
 
 {% block content %}
     <h1>Witaj {{ user.username }}!</h1>
+    <h3>Twoje dane:</h3>
 
-    {% if request.user|has_group:'user' %}
-        <p>Ten tekst widzi tylko użytkownik User.</p>
-    {% elif request.user|has_group:'admin' %}
-        <p>Ten tekst widzi tylko użytkownik Admin</p>
-    {% endif %}
+    <dl class="dl-horizontal">
+    <dt>Imię</dt>
+    <dd>{{ user.first_name }}</dd>
+    <dt>Nazwisko</dt>
+    <dd>{{ user.last_name }}</dd>
+    <dt>Adres email</dt>
+    <dd>{{ user.email }}</dd>
+    <dt>Miasto</dt>
+    <dd>{{ user.profile.location }}</dd>
+    </dl>
+
+
 {% endblock %}

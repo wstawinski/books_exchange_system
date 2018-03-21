@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.validators import RegexValidator, MinLengthValidator
+from django.contrib.auth.forms import UsernameField
 
 
 class RegisterForm(UserCreationForm):
@@ -72,3 +73,19 @@ class RegisterForm(UserCreationForm):
                 self.error_messages['email_not_unique']
             )
         return self.cleaned_data['email']
+
+
+class LoginForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': 'Podaj poprawne dane logowania.',
+        'inactive': 'Konto jest nieaktywne.',
+    }
+    username = UsernameField(
+        label='Nazwa użytkownika',
+        max_length=150,
+        widget=forms.TextInput(attrs={'autofocus': True}),
+    )
+    password = forms.CharField(
+        label='Hasło',
+        widget=forms.PasswordInput,
+    )
