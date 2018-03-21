@@ -80,16 +80,6 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'NAME': 'ziwg_testdb',
-        'USER': 'root',
-        'PASSWORD': 'password',
-
-    },
-
-    'secondary': {
-        'ENGINE': 'django.db.backends.mysql',
         'HOST': '89.70.176.12',
         'PORT': '3306',
         'NAME': 'system_wymiany_ksiazek',
