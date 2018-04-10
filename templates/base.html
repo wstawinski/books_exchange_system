@@ -30,6 +30,7 @@
               <a class="navbar-brand" href="{% url 'index' %}">Strona główna</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'search' %}">Szukaj</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'user_home' %}">Twoje konto</a></li>
                 <li><a href="{% url 'user_logout' %}">Wyloguj się</a></li>
