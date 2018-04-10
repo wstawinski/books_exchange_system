@@ -80,7 +80,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '89.70.176.12',
+        'HOST': '89.76.174.133',
         'PORT': '3306',
         'NAME': 'system_wymiany_ksiazek',
         'USER': 'projekt',
