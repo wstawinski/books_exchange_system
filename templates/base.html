@@ -32,6 +32,14 @@
             <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'search' %}">Szukaj</a></li>
             {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Twoje książki
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'user_panel_booksOwned' %}">Posiadane</a></li>
+                        <li><a href="{% url 'user_panel_booksWanted' %}">Poszukiwane</a></li>
+                    </ul>
+                </li>
                 <li><a href="{% url 'user_home' %}">Twoje konto</a></li>
                 <li><a href="{% url 'user_logout' %}">Wyloguj się</a></li>
             {% else %}

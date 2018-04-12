@@ -20,5 +20,6 @@ from .views import index
 urlpatterns = [
     path('user/', include('user.urls')),
     path('search/', include('search.urls')),
+    path('user_panel/', include('user_panel.urls')),
     path('', index, name='index'),
 ]
