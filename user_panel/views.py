@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from user_panel.forms import UserPanelBooksOwnedForm, UserPanelBooksWantedForm
 from search.models import Book
@@ -59,3 +59,16 @@ def user_panel_booksWanted(request):
         form = UserPanelBooksWantedForm()
 
     return render(request, 'user_panel/user_panel_booksWanted.html', {'form': form, 'books': books})
+
+
+@login_required
+def user_panel_removeBook(request):
+    if request.method == 'POST':
+        book_id = int(request.POST.get('book_id'))
+        type_id = int(request.POST.get('type_id'))
+        Book.objects.filter(id=book_id).delete()
+
+        if type_id == 1:
+            return redirect(user_panel_booksOwned)
+        elif type_id == 2:
+            return redirect(user_panel_booksWanted)
