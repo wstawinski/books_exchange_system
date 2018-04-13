@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Brak książki
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="text-center">Nie istnieje książka o danym numerze ID: {{ book_id }}</h1>
+        </div>
+    </div>
+
+{% endblock %}

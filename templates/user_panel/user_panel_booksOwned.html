@@ -17,17 +17,21 @@
             <h2>Twoje książki na wymianę:</h2>
             {% for book in books %}
                 <div class="row">
-                        <form action="{% url 'user_panel_removeBook' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="book_id" value="{{book.id}}" />
-                            <input type="hidden" name="type_id" value="1" />
-                            <button type="submit" class="close pull-left" data-toggle="tooltip" aria-label="Close" title="Usuń pozycję">
-                                  <span aria-hidden="true">&times;</span>
-                            </button>
+                    <span class="btn-group">
+                            <form action="{% url 'user_panel_removeBook' %}" method="post">
+                            <a href="{% url 'book_details' book.id %}">
+                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                            </a>
                             &nbsp;&nbsp;{{ book.author }} - {{ book.title }}
 
-                        </form>
-
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{book.id}}" />
+                                <input type="hidden" name="type_id" value="2" />
+                                <button type="submit" class="close" data-toggle="tooltip" aria-label="Close" title="Usuń pozycję">
+                                      &nbsp;&nbsp;<span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                    </span>
                 </div>
             {% endfor %}
     {% endif %}
