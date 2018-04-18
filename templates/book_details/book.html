@@ -16,15 +16,17 @@
     </div>
     <div class="container">
         <div class="col-md-8">
-            <h4>Opis książki:</h4>
-            <p class="text-justify">{{ book.description }}</p>
             {% if book.booktype_id == 1 %}
+                <h4>Opis książki:</h4>
+                <p class="text-justify">{{ book.description }}</p>
+                <h4>Lokalizacja: {{ book.user.profile.location }}</h4>
                 {% if book.user_id == user.id %}
                     <h3>Książka udostępniona do wymiany przez Ciebie.</h3>
                 {% else %}
                     <h3>Książka udostępniona do wymiany przez użytkownika: <b>{{ book.user.username }}</b></h3>
                 {% endif %}
             {% elif book.booktype_id == 2 %}
+                <h4>Lokalizacja: {{ book.user.profile.location }}</h4>
                 {% if book.user_id == user.id %}
                     <h3>Książka poszukiwana przez Ciebie.</h3>
                 {% else %}

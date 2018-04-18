@@ -29,11 +29,13 @@
             {% if books.count != 0 %}
                 <table class="table">
                     <tr>
-                        <th class="col-md-3">Tytuł</th><th class="col-md-2">Autor</th><th class="col-md-6">Opis</th><th class="col-md-1"></th>
+                        <th class="col-md-2">Tytuł</th><th class="col-md-2">Autor</th><th class="col-md-6">Opis</th>
+                        <th class="col-md-1">Lokalizacja</th><th class="col-md-1"></th>
                     </tr>
                 {% for book in books %}
                     <tr>
                         <td>{{ book.title }}</td><td>{{ book.author }}</td><td class="text-justify">{{ book.description }}</td>
+                        <td>{{ book.user.profile.location }}</td>
                         <td><a href="{% url 'book_details' book.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
                     </tr>
                 {% endfor %}
