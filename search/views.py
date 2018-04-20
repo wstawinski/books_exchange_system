@@ -9,9 +9,9 @@ def search(request):
         form = SearchForm(request.GET)
         books = None
         if form.is_valid():
-            author = request.GET['author']
-            title = request.GET['title']
-            location = request.GET['location']
+            author = form.cleaned_data['author']
+            title = form.cleaned_data['title']
+            location = form.cleaned_data['location']
 
             books = Book.objects.filter(booktype_id=1)
             if author:
@@ -23,6 +23,5 @@ def search(request):
     else:
         form = SearchForm()
         books = None
-
     return render(request, 'search/form.html', {'form': form, 'books': books})
 

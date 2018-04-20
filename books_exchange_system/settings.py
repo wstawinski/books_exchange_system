@@ -128,3 +128,9 @@ LOGIN_REDIRECT_URL = 'user_home'
 LOGOUT_REDIRECT_URL = 'index'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'systemdowymianyksiazek@gmail.com'
+EMAIL_HOST_PASSWORD = 'pocztahaslo'
+EMAIL_USE_TLS = True

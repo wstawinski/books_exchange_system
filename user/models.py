@@ -7,6 +7,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=50)
+    password_reset_code = models.CharField(max_length=50, default='0')
 
 
 @receiver(post_save, sender=User)

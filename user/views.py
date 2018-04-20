@@ -1,8 +1,11 @@
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm
+from .forms import RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 
 
 @login_required
@@ -27,3 +30,44 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'user/register.html', {'form': form})
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            user = User.objects.filter(email=form.cleaned_data['email_address'])[0]
+            password_reset_code = get_random_string(length=50)
+            user.profile.password_reset_code = password_reset_code
+            user.save()
+            send_mail(
+                'Przywracanie hasła',
+                'Aby ustanowić nowe hasło, kliknij poniższy link:\n'
+                'http://127.0.0.1:8000/user/reset_password/'+str(user.id)+'/'+str(password_reset_code)+'/',
+                'SystemWymianyKsiążek',
+                [request.POST['email_address']],
+            )
+            return render(request, 'user/reset_password_email_sent.html')
+    else:
+        form = ForgotPasswordForm()
+    return render(request, 'user/forgot_password.html', {'form': form})
+
+
+def reset_password(request, user_id=None, code=None):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        user_id = request.POST['user_id']
+        code = request.POST['code']
+        if form.is_valid():
+            user = User.objects.get(pk=user_id)
+            if user.profile.password_reset_code != code:
+                raise Http404
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            return render(request, 'user/reset_password_successful.html')
+    else:
+        user = User.objects.get(pk=user_id)
+        if user.profile.password_reset_code != code:
+            raise Http404()
+        form = ResetPasswordForm()
+    return render(request, 'user/reset_password.html', {'form': form, 'user_id': user_id, 'code': code})

@@ -89,3 +89,39 @@ class LoginForm(AuthenticationForm):
         label='Hasło',
         widget=forms.PasswordInput,
     )
+
+
+class ForgotPasswordForm(forms.Form):
+    email_address = forms.EmailField(
+        label='Adres email'
+    )
+
+    def clean(self):
+        if not User.objects.filter(email=self.cleaned_data['email_address']):
+            raise forms.ValidationError('Podany adres email nie został zarejestrowany w systemie.')
+        return self.cleaned_data
+
+
+class ResetPasswordForm(forms.Form):
+    password_validator = MinLengthValidator(
+        8,
+        message='Podaj dłuższe hasło.',
+    )
+    password1 = forms.CharField(
+        label='Hasło',
+        widget=forms.PasswordInput,
+        validators=[password_validator],
+        help_text='Hasło musi składać się przynajmniej z 8 znaków.',
+    )
+    password2 = forms.CharField(
+        label='Powtórz hasło',
+        widget=forms.PasswordInput,
+        validators=[password_validator],
+    )
+
+    def clean_password2(self):
+        password1 = self.cleaned_data['password1']
+        password2 = self.cleaned_data['password2']
+        if password1 != password2:
+            raise forms.ValidationError('Hasła nie są takie same.')
+        return password2
