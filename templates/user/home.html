@@ -2,23 +2,83 @@
 {% load custom_tags %}
 
 {% block title %}
-    Profil użytkownika
+    {% if user.id == user_profile.id %}
+        Twój profil użytkownika
+    {% else %}
+        Profil użytkownika {{ user_profile.username }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h1>Witaj {{ user.username }}!</h1>
-    <h3>Twoje dane:</h3>
-
-    <dl class="dl-horizontal">
-    <dt>Imię</dt>
-    <dd>{{ user.first_name }}</dd>
-    <dt>Nazwisko</dt>
-    <dd>{{ user.last_name }}</dd>
-    <dt>Adres email</dt>
-    <dd>{{ user.email }}</dd>
-    <dt>Miasto</dt>
-    <dd>{{ user.profile.location }}</dd>
-    </dl>
-
-
+    <div class="container">
+      <div class="jumbotron">
+          {% if user.id == user_profile.id %}
+              <div class="jumbotron-content">Twój profil użytkownika</div>
+          {% else %}
+              <div class="jumbotron-content">Profil użytkownika {{ user_profile.username }}</div>
+          {% endif %}
+      </div>
+    </div>
+    <div class="container">
+        {% if user.id == user_profile.id %}
+            <h3>Twoje dane:</h3>
+        {% else %}
+            <h3>Dane użytkownika:</h3>
+        {% endif %}
+        <dl class="dl-horizontal">
+            <dt>Imię</dt>
+            <dd>{{ user_profile.first_name }}</dd>
+            <dt>Nazwisko</dt>
+            <dd>{{ user_profile.last_name }}</dd>
+            <dt>Adres email</dt>
+            <dd>{{ user_profile.email }}</dd>
+            <dt>Miasto</dt>
+            <dd>{{ user_profile.profile.location }}</dd>
+        </dl>
+    </div>
+    <div class="container">
+        <h3>Książki:</h3>
+        <div class="col-md-6">
+            <h4>Udostępnione do wymiany:</h4>
+            {% if books_owned.count == 0 %}
+                <p>Nie udostępniono jeszcze żadnej książki do wymiany.</p>
+            {% else %}
+                <table class="table">
+                    <tr>
+                        <th>Tytuł</th><th>Autor</th><th></th>
+                    </tr>
+                    {% for book in books_owned %}
+                        <tr>
+                            <td>{{ book.title }}</td><td>{{ book.author }}</td>
+                            <td><a href="{% url 'book_details' book.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            {% if user.id == user_profile.id %}
+                <a href="{% url 'user_panel_booksOwned' %}">Zarządzaj książkami do wymiany</a>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h4>Poszukiwane:</h4>
+            {% if books_wanted.count == 0 %}
+                <p>Żadna książka nie jest poszukiwana.</p>
+            {% else %}
+                <table class="table">
+                    <tr>
+                        <th>Tytuł</th><th>Autor</th><th></th>
+                    </tr>
+                    {% for book in books_wanted %}
+                        <tr>
+                            <td>{{ book.title }}</td><td>{{ book.author }}</td>
+                            <td><a href="{% url 'book_details' book.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            {% if user.id == user_profile.id %}
+                <a href="{% url 'user_panel_booksWanted' %}">Zarządzaj poszukiwanymi książkami</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -42,7 +42,7 @@
                         <li><a href="{% url 'user_panel_booksWanted' %}">Poszukiwane</a></li>
                     </ul>
                 </li>
-                <li><a href="{% url 'user_home' %}">Twoje dane</a></li>
+                <li><a href="{% url 'user_home' user.id %}">Twój profil</a></li>
                 <li><a href="{% url 'user_logout' %}">Wyloguj się</a></li>
             {% else %}
                 <li><a href="{% url 'user_register' %}">Zarejestruj się</a></li>

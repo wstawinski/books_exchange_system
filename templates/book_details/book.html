@@ -23,14 +23,16 @@
                 {% if book.user_id == user.id %}
                     <h3>Książka udostępniona do wymiany przez Ciebie.</h3>
                 {% else %}
-                    <h3>Książka udostępniona do wymiany przez użytkownika: <b>{{ book.user.username }}</b></h3>
+                    <h3>Książka udostępniona do wymiany przez użytkownika:
+                        <b><a href="{% url 'user_home' book.user.id %}">{{ book.user.username }}</a></b></h3>
                 {% endif %}
             {% elif book.booktype_id == 2 %}
                 <h4>Lokalizacja: {{ book.user.profile.location }}</h4>
                 {% if book.user_id == user.id %}
                     <h3>Książka poszukiwana przez Ciebie.</h3>
                 {% else %}
-                    <h3>Książka poszukiwana przez użytkownika: <b>{{ book.user.username }}</b></h3>
+                    <h3>Książka poszukiwana przez użytkownika:
+                        <b><a href="{% url 'user_home' book.user.id %}">{{ book.user.username }}</a></b></h3>
                 {% endif %}
             {%  endif %}
         </div>

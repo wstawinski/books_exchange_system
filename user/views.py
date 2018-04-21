@@ -1,6 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+from search.models import Book
 from .forms import RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import Group, User
@@ -9,8 +11,11 @@ from django.utils.crypto import get_random_string
 
 
 @login_required
-def home(request):
-    return render(request, 'user/home.html')
+def home(request, user_id):
+    user_profile = User.objects.get(pk=user_id)
+    books_owned = Book.objects.filter(user_id=user_id).filter(booktype_id=1)
+    books_wanted = Book.objects.filter(user_id=user_id).filter(booktype_id=2)
+    return render(request, 'user/home.html', {'user_profile': user_profile, 'books_owned': books_owned, 'books_wanted': books_wanted})
 
 
 def register(request):
