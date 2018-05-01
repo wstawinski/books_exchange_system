@@ -40,7 +40,7 @@
         <h3>Książki:</h3>
         <div class="col-md-6">
             <h4>Udostępnione do wymiany:</h4>
-            {% if books_owned.count == 0 %}
+            {% if not books_owned %}
                 <p>Nie udostępniono jeszcze żadnej książki do wymiany.</p>
             {% else %}
                 <table class="table">
@@ -61,7 +61,7 @@
         </div>
         <div class="col-md-6">
             <h4>Poszukiwane:</h4>
-            {% if books_wanted.count == 0 %}
+            {% if not books_wanted %}
                 <p>Żadna książka nie jest poszukiwana.</p>
             {% else %}
                 <table class="table">

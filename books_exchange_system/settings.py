@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'user',
     'search',
     'user_panel',
-    'book_details'
+    'book_details',
+    'book',
 ]
 
 MIDDLEWARE = [

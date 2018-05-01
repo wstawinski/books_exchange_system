@@ -1,11 +1,10 @@
-from django.shortcuts import render, render_to_response
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404
 from search.models import Book
 
 
 def book_details(request, book_id):
-    try:
-        book = Book.objects.get(pk=book_id)
-    except Book.DoesNotExist:
-        return render_to_response('book_details/noSuchBook.html', {'book_id': book_id})
-
+    book = get_object_or_404(Book, pk=book_id)
+    if book.is_available is False:
+        raise Http404()
     return render(request, 'book_details/book.html', {'book': book})

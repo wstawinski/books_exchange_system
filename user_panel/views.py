@@ -22,7 +22,7 @@ def user_panel_booksOwned(request):
 
     form = UserPanelBooksOwnedForm()
     books = Book.objects
-    books = books.filter(user_id__exact=request.user).filter(booktype_id__exact=1)
+    books = books.filter(user_id__exact=request.user, booktype_id__exact=1, is_available=True)
 
     return render(request, 'user_panel/user_panel_booksOwned.html', {'form': form, 'books': books})
 
@@ -42,7 +42,7 @@ def user_panel_booksWanted(request):
 
     form = UserPanelBooksWantedForm()
     books = Book.objects
-    books = books.filter(user_id__exact=request.user).filter(booktype_id__exact=2)
+    books = books.filter(user_id__exact=request.user, booktype_id__exact=2, is_available=True)
 
     return render(request, 'user_panel/user_panel_booksWanted.html', {'form': form, 'books': books})
 
@@ -52,7 +52,10 @@ def user_panel_removeBook(request):
     if request.method == 'POST':
         book_id = int(request.POST.get('book_id'))
         type_id = int(request.POST.get('type_id'))
-        Book.objects.filter(id=book_id).delete()
+
+        book = Book.objects.get(pk=book_id)
+        book.is_available = False
+        book.save()
 
         if type_id == 1:
             return redirect(user_panel_booksOwned)

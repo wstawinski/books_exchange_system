@@ -1,7 +1,9 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
+from book.models import Exchange
 from search.models import Book
 from .forms import RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate
@@ -13,8 +15,8 @@ from django.utils.crypto import get_random_string
 @login_required
 def home(request, user_id):
     user_profile = User.objects.get(pk=user_id)
-    books_owned = Book.objects.filter(user_id=user_id).filter(booktype_id=1)
-    books_wanted = Book.objects.filter(user_id=user_id).filter(booktype_id=2)
+    books_owned = Book.objects.filter(user_id=user_id, booktype_id=1, is_available=True)
+    books_wanted = Book.objects.filter(user_id=user_id, booktype_id=2, is_available=True)
     return render(request, 'user/home.html', {'user_profile': user_profile, 'books_owned': books_owned, 'books_wanted': books_wanted})
 
 
@@ -64,15 +66,23 @@ def reset_password(request, user_id=None, code=None):
         user_id = request.POST['user_id']
         code = request.POST['code']
         if form.is_valid():
-            user = User.objects.get(pk=user_id)
+            user = get_object_or_404(User, pk=user_id)
             if user.profile.password_reset_code != code:
                 raise Http404
             user.set_password(form.cleaned_data['password1'])
             user.save()
             return render(request, 'user/reset_password_successful.html')
     else:
-        user = User.objects.get(pk=user_id)
+        user = get_object_or_404(User, pk=user_id)
         if user.profile.password_reset_code != code:
             raise Http404()
         form = ResetPasswordForm()
     return render(request, 'user/reset_password.html', {'form': form, 'user_id': user_id, 'code': code})
+
+
+@login_required
+def exchanges(request):
+    exchanges_when_initiator = Exchange.objects.filter(initiator_id=request.user.id)
+    exchanges_when_receiver = Exchange.objects.filter(receiver_id=request.user.id)
+    return render(request, 'user/exchanges.html', {'exchanges_when_initiator': exchanges_when_initiator,
+                                                   'exchanges_when_receiver': exchanges_when_receiver})

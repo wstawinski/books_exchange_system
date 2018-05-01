@@ -13,7 +13,7 @@ def search(request):
             title = form.cleaned_data['title']
             location = form.cleaned_data['location']
 
-            books = Book.objects.filter(booktype_id=1)
+            books = Book.objects.filter(booktype_id=1, is_available=True)
             if author:
                 books = books.filter(author__icontains=author)
             if title:

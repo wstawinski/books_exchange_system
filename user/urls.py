@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, register, forgot_password, reset_password
+from .views import home, register, forgot_password, reset_password, exchanges
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import LoginForm
 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('forgot_password', forgot_password, name='user_forgot_password'),
     path('reset_password/<int:user_id>/<str:code>/', reset_password, name='user_reset_password'),
     path('reset_password', reset_password, name='user_reset_password'),
+    path('exchanges', exchanges, name='user_exchanges')
 ]
