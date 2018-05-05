@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Szczegóły wymiany
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <div class="jumbotron-content">
+                Szczegóły wymiany
+            </div>
+        </div>
+    </div>
+
+    {% if user.id == exchange.initiator.id %}
+        <div class="container">
+            <h3>Wymiana zainicjowana przez Ciebie</h3>
+            <dl class="dl-horizontal">
+                <dt>Książka odbiorcy</dt>
+                <dd>
+                    {{ exchange.receivers_book.title }} - {{ exchange.receivers_book.author }}
+                    <a href="{% url 'book_details_short' exchange.receivers_book.id %}">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                    </a>
+                </dd>
+                <dt>Odbiorca</dt>
+                <dd><a href="{% url 'user_home' exchange.receiver.id %}">{{ exchange.receiver.username }}</a></dd>
+                <dt>Twoja książka</dt>
+                {% if exchange.initiators_book %}
+                    <dd>
+                        {{ exchange.initiators_book.title }} - {{ exchange.initiators_book.author }}
+                        <a href="{% url 'book_details_short' exchange.initiators_book.id %}">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                        </a>
+                    </dd>
+                {% else %}
+                    <dd>-</dd>
+                {% endif %}
+                <dt>Data utworzenia</dt>
+                <dd>{{ exchange.date_created|date:"d.m.Y" }}</dd>
+                <dt>Data zakończenia</dt>
+                {% if exchange.date_closed %}
+                    <dd>{{ exchange.date_closed|date:"d.m.Y" }}</dd>
+                {% else %}
+                    <dd>-</dd>
+                {% endif %}
+            </dl>
+            {% if exchange.status.id == 1 or exchange.status.id == 3 or exchange.status.id == 4 or exchange.status.id == 5 %}
+                <div class="alert alert-info">
+                    <strong>Status:</strong> {{ exchange.status.message_when_initiator }}
+                </div>
+                {% if exchange.status.id == 1 %}
+                    <form role="form" action="{% url 'book_exchange_cancel' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                        <button type="submit" class="btn btn-default">Zrezygnuj z wymiany</button>
+                    </form>
+                {% else %}
+                    <h4>Skorzystaj z czatu aby uzgodnić szczegóły wymiany:</h4>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="dialog-box">
+                                {% if exchange_messages %}
+                                    {% for message in exchange_messages %}
+                                        {% if message.is_from_initiator %}
+                                            <div class="row">
+                                                <div class="dialog-message-initiator">
+                                                    {{ message.message }}<br>
+                                                    <span style="font-size: 10px">{{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="row">
+                                                <div class="dialog-message-receiver">
+                                                    {{ message.message }}<br>
+                                                    <span style="font-size: 10px">{{ exchange.receiver.username }} - {{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="row">
+                                        <p>Brak wiadomości</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form role="form" action="{% url 'book_exchange_send_message' %}" method="post">
+                                {% csrf_token %}
+                                <textarea class="form-control" name="message_body">Napisz wiadomość...</textarea>
+                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                <button type="submit" class="btn btn-default btn-sm">Wyślij</button>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                    {% if exchange.status.id == 3 or exchange.status.id == 5 %}
+                        <div>
+                            <form role="form" action="{% url 'book_exchange_successful' %}" method="post" style="display: inline-block">
+                                {% csrf_token %}
+                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                <button type="submit" class="btn btn-default">Potwierdź udaną wymianę</button>
+                            </form>
+                            <form role="form" action="{% url 'book_exchange_cancel' %}" method="post" style="display: inline-block">
+                                {% csrf_token %}
+                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                <button type="submit" class="btn btn-default">Zrezygnuj z wymiany</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% elif exchange.status.id == 6 %}
+                <div class="alert alert-success">
+                    <strong>Status:</strong> {{ exchange.status.message_when_initiator }}
+                </div>
+            {% else %}
+                <div class="alert alert-danger">
+                    <strong>Status:</strong> {{ exchange.status.message_when_initiator }}
+                </div>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="container">
+            <h3>Oferta wymiany zgłoszona przez innego użytkownika</h3>
+            <dl class="dl-horizontal">
+                <dt>Twoja książka</dt>
+                <dd>
+                    {{ exchange.receivers_book.title }} - {{ exchange.receivers_book.author }}
+                        <a href="{% url 'book_details_short' exchange.receivers_book.id %}">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                        </a>
+                </dd>
+                <dt>Inicjator</dt>
+                <dd><a href="{% url 'user_home' exchange.initiator.id %}">{{ exchange.initiator.username }}</a></dd>
+                <dt>Książka inicjatora</dt>
+                {% if exchange.initiators_book %}
+                    <dd>
+                        {{ exchange.initiators_book.title }} - {{ exchange.initiators_book.author }}
+                        <a href="{% url 'book_details_short' exchange.initiators_book.id %}">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                        </a>
+                    </dd>
+                {% else %}
+                    <dd>-</dd>
+                {% endif %}
+                <dt>Data utworzenia</dt>
+                <dd>{{ exchange.date_created|date:"d.m.Y" }}</dd>
+                <dt>Data zakończenia</dt>
+                {% if exchange.date_closed %}
+                    <dd>{{ exchange.date_closed|date:"d.m.Y" }}</dd>
+                {% else %}
+                    <dd>-</dd>
+                {% endif %}
+            </dl>
+            {% if exchange.status.id == 1 or exchange.status.id == 3 or exchange.status.id == 4 or exchange.status.id == 5 %}
+                <div class="alert alert-info">
+                    <strong>Status:</strong> {{ exchange.status.message_when_receiver }}
+                </div>
+                {% if exchange.status.id == 1 %}
+                    <h4>Wybierz książkę z listy udostępnionych przez inicjatora:</h4>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table">
+                                <tr>
+                                    <th class="col-md-4">Tytuł</th><th class="col-md-4">Autor</th><th class="col-md-4"></th>
+                                </tr>
+                                {% for book in initiator_books %}
+                                    <tr>
+                                        <td>{{ book.title }}</td><td>{{ book.author }}</td>
+                                        <td>
+                                            <form role="form" action="{% url 'book_exchange_choose_initiators_book' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                                <input type="hidden" name="book_id" value="{{ book.id }}">
+                                                <div class="btn-group">
+                                                    <a href="{% url 'book_details_short' book.id %}" class="btn btn-default btn-sm">Szczegóły</a>
+                                                    <button type="submit" class="btn btn-default btn-sm">Wybierz</button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                    <form role="form" action="{% url 'book_exchange_cancel' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                        <button type="submit" class="btn btn-default">Zrezygnuj z wymiany</button>
+                    </form>
+                {% else %}
+                    <h4>Skorzystaj z czatu aby uzgodnić szczegóły wymiany:</h4>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="dialog-box">
+                            {% if exchange_messages %}
+                                {% for message in exchange_messages %}
+                                    {% if message.is_from_initiator %}
+                                        <div class="row">
+                                            <div class="dialog-message-initiator">
+                                                {{ message.message }}<br>
+                                                <span style="font-size: 10px">{{ exchange.initiator.username }} - {{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="dialog-message-receiver">
+                                                {{ message.message }}<br>
+                                                <span style="font-size: 10px">{{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="row">
+                                    <p>Brak wiadomości</p>
+                                </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form role="form" action="{% url 'book_exchange_send_message' %}" method="post">
+                            {% csrf_token %}
+                            <textarea class="form-control" name="message_body">Napisz wiadomość...</textarea>
+                            <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                            <button type="submit" class="btn btn-default btn-sm">Wyślij</button>
+                        </form>
+                        </div>
+                    </div>
+                    <br>
+                    {% if exchange.status.id == 3 or exchange.status.id == 4 %}
+                        <div>
+                            <form role="form" action="{% url 'book_exchange_successful' %}" method="post" style="display: inline-block">
+                                {% csrf_token %}
+                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                <button type="submit" class="btn btn-default">Potwierdź udaną wymianę</button>
+                            </form>
+                            <form role="form" action="{% url 'book_exchange_cancel' %}" method="post" style="display: inline-block">
+                                {% csrf_token %}
+                                <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                                <button type="submit" class="btn btn-default">Zrezygnuj z wymiany</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% elif exchange.status.id == 6 %}
+                <div class="alert alert-success">
+                    <strong>Status:</strong> {{ exchange.status.message_when_receiver }}
+                </div>
+            {% else %}
+                <div class="alert alert-danger">
+                    <strong>Status:</strong> {{ exchange.status.message_when_receiver }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

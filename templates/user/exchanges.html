@@ -57,8 +57,8 @@
                         {% else %}
                             <td>-</td>
                         {% endif %}
-                        <td>{{ exchange.status.name }}</td>
-                        <td><a class="btn btn-default btn-sm">Szczegóły</a></td>
+                        <td>{{ exchange.status.message_when_initiator }}</td>
+                        <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -94,8 +94,8 @@
                         {% else %}
                             <td>-</td>
                         {% endif %}
-                        <td>{{ exchange.status.name }}</td>
-                        <td><a class="btn btn-default btn-sm">Szczegóły</a></td>
+                        <td>{{ exchange.status.message_when_receiver }}</td>
+                        <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
                     </tr>
                 {% endfor %}
             </table>

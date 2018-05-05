@@ -3,6 +3,35 @@
     text-align: center;
 }
 
+.dialog-box{
+    margin: 10px 0 10px 0;
+    padding: 20px 30px 20px 30px;
+    background-color: #EEEEEE;
+    border-radius: 10%;
+    min-height: 100px;
+}
+
+.dialog-message-initiator{
+    padding: 10px 10px 10px 10px;
+    margin: 5px 0 5px 0;
+    background-color: cornflowerblue;
+    border-radius: 10%;
+    text-align: left;
+    display: inline-block;
+    max-width: 60%;
+}
+
+.dialog-message-receiver{
+    padding: 10px 10px 10px 10px;
+    margin: 5px 0 5px 0;
+    background-color: yellowgreen;
+    border-radius: 10%;
+    text-align: right;
+    display: inline-block;
+    float: right;
+    max-width: 60%;
+}
+
 
 
 

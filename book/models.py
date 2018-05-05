@@ -4,7 +4,8 @@ from search.models import Book
 
 
 class ExchangeStatus(models.Model):
-    name = models.CharField(max_length=500)
+    message_when_initiator = models.CharField(max_length=500, null=True)
+    message_when_receiver = models.CharField(max_length=500, null=True)
 
 
 class Exchange(models.Model):
@@ -14,7 +15,13 @@ class Exchange(models.Model):
     receivers_book = models.ForeignKey(Book, on_delete=models.DO_NOTHING, related_name='%(class)s_when_receivers_book', default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_closed = models.DateTimeField(null=True)
-    status = models.ForeignKey(ExchangeStatus, on_delete=models.DO_NOTHING)
+    status = models.ForeignKey(ExchangeStatus, on_delete=models.CASCADE)
 
+
+class ExchangeMessage(models.Model):
+    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE)
+    is_from_initiator = models.BooleanField()
+    message = models.CharField(max_length=500)
+    date_sent = models.DateTimeField(auto_now_add=True)
 
 
