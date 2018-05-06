@@ -11,20 +11,20 @@
     min-height: 100px;
 }
 
-.dialog-message-initiator{
+.dialog-message-him{
     padding: 10px 10px 10px 10px;
     margin: 5px 0 5px 0;
-    background-color: cornflowerblue;
+    background-color: yellowgreen;
     border-radius: 10%;
     text-align: left;
     display: inline-block;
     max-width: 60%;
 }
 
-.dialog-message-receiver{
+.dialog-message-me{
     padding: 10px 10px 10px 10px;
     margin: 5px 0 5px 0;
-    background-color: yellowgreen;
+    background-color: cornflowerblue;
     border-radius: 10%;
     text-align: right;
     display: inline-block;

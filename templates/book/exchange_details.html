@@ -66,14 +66,14 @@
                                     {% for message in exchange_messages %}
                                         {% if message.is_from_initiator %}
                                             <div class="row">
-                                                <div class="dialog-message-initiator">
+                                                <div class="dialog-message-me">
                                                     {{ message.message }}<br>
                                                     <span style="font-size: 10px">{{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
                                                 </div>
                                             </div>
                                         {% else %}
                                             <div class="row">
-                                                <div class="dialog-message-receiver">
+                                                <div class="dialog-message-him">
                                                     {{ message.message }}<br>
                                                     <span style="font-size: 10px">{{ exchange.receiver.username }} - {{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
                                                 </div>
@@ -203,14 +203,14 @@
                                 {% for message in exchange_messages %}
                                     {% if message.is_from_initiator %}
                                         <div class="row">
-                                            <div class="dialog-message-initiator">
+                                            <div class="dialog-message-him">
                                                 {{ message.message }}<br>
                                                 <span style="font-size: 10px">{{ exchange.initiator.username }} - {{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
                                             </div>
                                         </div>
                                     {% else %}
                                         <div class="row">
-                                            <div class="dialog-message-receiver">
+                                            <div class="dialog-message-me">
                                                 {{ message.message }}<br>
                                                 <span style="font-size: 10px">{{ message.date_sent|date:"H:i:s d.m.Y" }}</span>
                                             </div>

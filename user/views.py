@@ -82,7 +82,7 @@ def reset_password(request, user_id=None, code=None):
 
 @login_required
 def exchanges(request):
-    exchanges_when_initiator = Exchange.objects.filter(initiator_id=request.user.id)
-    exchanges_when_receiver = Exchange.objects.filter(receiver_id=request.user.id)
+    exchanges_when_initiator = Exchange.objects.filter(initiator_id=request.user.id).order_by('-pk')
+    exchanges_when_receiver = Exchange.objects.filter(receiver_id=request.user.id).order_by('-pk')
     return render(request, 'user/exchanges.html', {'exchanges_when_initiator': exchanges_when_initiator,
                                                    'exchanges_when_receiver': exchanges_when_receiver})
