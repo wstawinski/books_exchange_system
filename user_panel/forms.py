@@ -1,5 +1,6 @@
 from django import forms
 from search.models import Book
+from search.models import Images
 
 
 class UserPanelBooksOwnedForm(forms.ModelForm):
@@ -18,6 +19,19 @@ class UserPanelBooksOwnedForm(forms.ModelForm):
         self.fields['title'].label = 'Tytuł'
         self.fields['description'].label = 'Opis'
         self.fields['description'].required = False
+
+
+#nieużywane, bo trzeba w <input> jebnąć MULTIPLE a stąd się nie da.
+class UserPanelBooksOwnedFormImage(forms.ModelForm):
+    class Meta:
+        model = Images
+        fields = ('image',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['image'].label = 'Zdjęcie'
+        self.fields['image'].required = False
 
 
 class UserPanelBooksWantedForm(forms.ModelForm):

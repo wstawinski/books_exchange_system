@@ -124,6 +124,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+MEDIA_ROOT = 'E:/booksExchangeSystem/media/'
+MEDIA_URL = 'media/'
+
 LOGIN_URL = 'user_login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
