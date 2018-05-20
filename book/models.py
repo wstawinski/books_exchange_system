@@ -25,3 +25,10 @@ class ExchangeMessage(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
 
 
+class Report(models.Model):
+    reporter = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(Book, on_delete=models.DO_NOTHING, null=True)
+    description = models.CharField(max_length=500, null=True)
+
+    def __str__(self):
+        return f'{self.reporter.username}: {self.book}'

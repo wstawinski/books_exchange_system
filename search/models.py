@@ -11,6 +11,9 @@ class Book(models.Model):
     booktype = models.ForeignKey(BookType, on_delete=models.DO_NOTHING)
     is_available = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f'{self.author} - {self.title}'
+
 
 
 

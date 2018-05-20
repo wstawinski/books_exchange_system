@@ -3,11 +3,11 @@ from django.shortcuts import render, get_object_or_404
 from search.models import Book
 
 
-def book_details(request, book_id):
+def book_details(request, book_id, reported=False):
     book = get_object_or_404(Book, pk=book_id)
     if book.is_available is False:
         raise Http404()
-    return render(request, 'book_details/book.html', {'book': book})
+    return render(request, 'book_details/book.html', {'book': book, 'reported': reported})
 
 
 def book_details_short(request, book_id):
