@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from user_panel.forms import UserPanelBooksOwnedForm, UserPanelBooksWantedForm
-from search.models import Book
+from user_panel.forms import UserPanelBooksOwnedForm, UserPanelBooksWantedForm, UserPanelBooksOwnedFormImage
+from search.models import Book, Images
+from django.core.files.storage import FileSystemStorage
 
 
 @login_required
@@ -20,9 +21,23 @@ def user_panel_booksOwned(request):
         book.user_id = request.user.id
         book.save()
 
+        #By bookid przypisać do zdjęcia
+        books = Book.objects
+        bookid = books.filter(user_id__exact=request.user, booktype_id__exact=1, is_available=True, author=author, title=title).order_by('-id')[0]
+        for oneimage in request.FILES.getlist('image'):
+            image = Images()
+            image.bookId = bookid
+            image.image = oneimage.name
+            image.save()
+
+            fs = FileSystemStorage()
+            filename = fs.save(oneimage.name, oneimage)
+
     form = UserPanelBooksOwnedForm()
     books = Book.objects
     books = books.filter(user_id__exact=request.user, booktype_id__exact=1, is_available=True)
+
+    #formImage = UserPanelBooksOwnedFormImage()
 
     return render(request, 'user_panel/user_panel_booksOwned.html', {'form': form, 'books': books})
 

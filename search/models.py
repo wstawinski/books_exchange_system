@@ -15,5 +15,10 @@ class Book(models.Model):
         return f'{self.author} - {self.title}'
 
 
+class Images(models.Model):
+    bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='documents/')
+
+
 
 
