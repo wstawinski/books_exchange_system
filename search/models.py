@@ -20,5 +20,7 @@ class Images(models.Model):
     image = models.ImageField(upload_to='documents/')
 
 
+def __str__(self):
+    return f'{self.author} - {self.title}'
 
 
