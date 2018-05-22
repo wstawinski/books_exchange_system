@@ -11,10 +11,18 @@ class Book(models.Model):
     booktype = models.ForeignKey(BookType, on_delete=models.DO_NOTHING)
     is_available = models.BooleanField(default=True)
 
+
 class Images(models.Model):
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='documents/')
 
 
+class Tag(models.Model):
+    tag = models.CharField(max_length=50)
+
+
+class BookTag(models.Model):
+    bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
+    tagId = models.ForeignKey(Tag, on_delete=models.DO_NOTHING)
 
 
