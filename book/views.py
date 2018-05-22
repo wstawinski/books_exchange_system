@@ -2,7 +2,9 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from book.models import Exchange, ExchangeMessage
+
+from book.forms import ReportForm
+from book.models import Exchange, ExchangeMessage, Report
 from search.models import Book
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -120,3 +122,24 @@ def exchange_successful(request):
                 exchange_obj.status_id = 5
         exchange_obj.save()
         return redirect('book_exchange_details', exchange_id=exchange_obj.id)
+
+
+@login_required
+def report(request):
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+
+        book_id = request.POST['book_id']
+        report_obj = Report()
+        report_obj.reporter = request.user
+        report_obj.book = get_object_or_404(Book, pk=book_id)
+        report_obj.description = form.data['description']
+        report_obj.save()
+
+        return redirect('book_details', book_id, True)
+    else:
+        book = get_object_or_404(Book, pk=request.GET['book_id'])
+        form = ReportForm()
+        return render(request, 'book/report_form.html', {'form': form, 'book_id': book.id})
+
+
