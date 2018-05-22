@@ -24,13 +24,14 @@ class SearchForm(forms.Form):
         required=False,
     )
 
+    #nieużywane V
     def clean(self):
         author = self.cleaned_data.get('author')
         title = self.cleaned_data.get('title')
         location = self.cleaned_data.get('location')
 
-        if not author and not title and not location:
-            raise forms.ValidationError("Ustawienie chociaż jednego z pól jest wymagane.")
+        #if not author and not title and not location:
+        #    raise forms.ValidationError("Ustawienie chociaż jednego z pól jest wymagane.")
 
         return self.cleaned_data
 

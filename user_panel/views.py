@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from user_panel.forms import UserPanelBooksOwnedForm, UserPanelBooksWantedForm, UserPanelBooksOwnedFormImage
-from search.models import Book, Images
+from search.models import Book, Images, Tag, BookTag
 from django.core.files.storage import FileSystemStorage
 
 
@@ -32,6 +32,21 @@ def user_panel_booksOwned(request):
 
             fs = FileSystemStorage()
             filename = fs.save(oneimage.name, oneimage)
+
+        for tagStr in request.POST.getlist('tags'):
+            print(tagStr)
+            bk = BookTag()
+            bk.bookId = bookid
+
+            num_results = Tag.objects.filter(tag=tagStr).count()
+            if num_results == 0:
+                t = Tag()
+                t.tag = tagStr
+                t.save()
+
+            bk.tagId = Tag.objects.get(tag=tagStr)
+            bk.save()
+
 
     form = UserPanelBooksOwnedForm()
     books = Book.objects
