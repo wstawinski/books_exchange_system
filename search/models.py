@@ -14,11 +14,11 @@ class Book(models.Model):
 
 class Images(models.Model):
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='documents/')
+    image = models.ImageField()
 
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=50)
+    tag = models.CharField(unique=True, max_length=50)
 
 
 class BookTag(models.Model):

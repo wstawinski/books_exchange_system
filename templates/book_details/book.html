@@ -60,6 +60,17 @@
                 {%  endif %}
             </div>
         </div>
+
+        <div style="margin-bottom: 50px;" class="row">
+            <div class="col-md-8">
+                {% for tag in bookTags %}
+
+                    <h2 style="display: inline;"><span class="label label-info">{{ tag.tagId.tag }}</span></h2>
+
+                {% endfor %}
+            </div>
+         </div>
+
         <div class="row">
             <div class="col-md-8">
                 {% for image in images %}

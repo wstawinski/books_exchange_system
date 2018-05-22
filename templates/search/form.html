@@ -18,6 +18,24 @@
 
                 {{ form | crispy }}
 
+
+                <div class="form-group">
+                    <label class="control-label ">
+                        Tagi
+                    </label>
+                    (przytrzymaj CTRL by wybrać więcej niż 1 tag)
+                    <div class="controls ">
+                        <select name="tags" class="form-control" multiple>
+                             {% for tag in tags %}
+                                <option>{{ tag.tag }}</option>
+                             {% endfor %}
+                         </select>
+                    </div>
+                </div>
+
+
+
+
                 <button type="submit" class="btn btn-default">Szukaj</button>
             </form>
         </div>
