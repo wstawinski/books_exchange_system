@@ -11,6 +11,18 @@ class Book(models.Model):
     booktype = models.ForeignKey(BookType, on_delete=models.DO_NOTHING)
     is_available = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f'{self.author} - {self.title}'
+
+    def delete(self, using=None, keep_parents=False):
+        # first check if there are any reports referencing this book
+        from book.models import Report
+        reports = Report.objects.filter(book_id__exact=self.id)
+        for report in reports:
+            report.delete()
+
+        super(Book, self).delete(using)
+
 
 class Images(models.Model):
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -20,8 +32,6 @@ class Images(models.Model):
 class Tag(models.Model):
     tag = models.CharField(unique=True, max_length=50)
 
-def __str__(self):
-    return f'{self.author} - {self.title}'
 
 class BookTag(models.Model):
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
