@@ -30,78 +30,89 @@
         {% endif %}
     </div>
     <div class="container">
-        <h3>Wymiany zainicjowane przez Ciebie:</h3>
-        {% if exchanges_when_initiator %}
-            <table class="table">
-                <tr>
-                    <th class="col-md-2">Książka odbiorcy</th>
-                    <th class="col-md-1">Odbiorca</th>
-                    <th class="col-md-2">Twoja książka</th>
-                    <th class="col-md-1">Data utworzenia</th>
-                    <th class="col-md-1">Data zakończenia</th>
-                    <th class="col-md-4">Status</th>
-                    <th class="col-md-1"></th>
-                </tr>
-                {% for exchange in exchanges_when_initiator %}
-                    <tr>
-                        <td>{{ exchange.receivers_book.title }}</td>
-                        <td>{{ exchange.receiver.username }}</td>
-                        {% if exchange.initiators_book %}
-                            <td>{{ exchange.initiators_book.title }}</td>
-                        {% else %}
-                            <td>-</td>
-                        {% endif %}
-                        <td>{{ exchange.date_created|date:"d.m.Y" }}</td>
-                        {% if exchange.date_closed %}
-                            <td>{{ exchange.date_closed|date:"d.m.Y" }}</td>
-                        {% else %}
-                            <td>-</td>
-                        {% endif %}
-                        <td>{{ exchange.status.message_when_initiator }}</td>
-                        <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <h4>Brak wymian</h4>
-        {% endif %}
+         <div class="panel panel-info" >
+             <div class="panel-heading"> <h4>Wymiany zainicjowane przez Ciebie</h4></div>
+             <div class="panel-body">
+                 {% if exchanges_when_initiator %}
+                    <table class="table">
+                        <tr>
+                            <th class="col-md-2">Książka odbiorcy</th>
+                            <th class="col-md-1">Odbiorca</th>
+                            <th class="col-md-2">Twoja książka</th>
+                            <th class="col-md-1">Data utworzenia</th>
+                            <th class="col-md-1">Data zakończenia</th>
+                            <th class="col-md-4">Status</th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                        {% for exchange in exchanges_when_initiator %}
+                            <tr>
+                                <td>{{ exchange.receivers_book.title }}</td>
+                                <td>{{ exchange.receiver.username }}</td>
+                                {% if exchange.initiators_book %}
+                                    <td>{{ exchange.initiators_book.title }}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                                <td>{{ exchange.date_created|date:"d.m.Y" }}</td>
+                                {% if exchange.date_closed %}
+                                    <td>{{ exchange.date_closed|date:"d.m.Y" }}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                                <td>{{ exchange.status.message_when_initiator }}</td>
+                                <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <h4>Brak wymian</h4>
+                {% endif %}
+             </div>
+         </div>
+
     </div>
     <div class="container">
-        <h3>Oferty wymiany zgłoszone przez innych użytkowników:</h3>
-        {% if exchanges_when_receiver %}
-            <table class="table">
-                <tr>
-                    <th class="col-md-2">Twoja książka</th>
-                    <th class="col-md-1">Inicjator</th>
-                    <th class="col-md-2">Książka inicjatora</th>
-                    <th class="col-md-1">Data utworzenia</th>
-                    <th class="col-md-1">Data zakończenia</th>
-                    <th class="col-md-4">Status</th>
-                    <th class="col-md-1"></th>
-                </tr>
-                {% for exchange in exchanges_when_receiver %}
-                    <tr>
-                        <td>{{ exchange.receivers_book.title }}</td>
-                        <td>{{ exchange.initiator.username }}</td>
-                        {% if exchange.initiators_book %}
-                            <td>{{ exchange.initiators_book.title }}</td>
-                        {% else %}
-                            <td>-</td>
-                        {% endif %}
-                        <td>{{ exchange.date_created|date:"d.m.Y" }}</td>
-                        {% if exchange.date_closed %}
-                            <td>{{ exchange.date_closed|date:"d.m.Y" }}</td>
-                        {% else %}
-                            <td>-</td>
-                        {% endif %}
-                        <td>{{ exchange.status.message_when_receiver }}</td>
-                        <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <h4>Brak wymian</h4>
-        {% endif %}
+         <div class="panel panel-info" >
+             <div class="panel-heading"><h4>Oferty wymiany zgłoszone przez innych użytkowników</h4></div>
+                <div class="panel-body">
+                    {% if exchanges_when_receiver %}
+                    <table class="table">
+                        <tr>
+                            <th class="col-md-2">Twoja książka</th>
+                            <th class="col-md-1">Inicjator</th>
+                            <th class="col-md-2">Książka inicjatora</th>
+                            <th class="col-md-1">Data utworzenia</th>
+                            <th class="col-md-1">Data zakończenia</th>
+                            <th class="col-md-4">Status</th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                        {% for exchange in exchanges_when_receiver %}
+                            <tr>
+                                <td>{{ exchange.receivers_book.title }}</td>
+                                <td>{{ exchange.initiator.username }}</td>
+                                {% if exchange.initiators_book %}
+                                    <td>{{ exchange.initiators_book.title }}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                                <td>{{ exchange.date_created|date:"d.m.Y" }}</td>
+                                {% if exchange.date_closed %}
+                                    <td>{{ exchange.date_closed|date:"d.m.Y" }}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                                <td>{{ exchange.status.message_when_receiver }}</td>
+                                <td><a href="{% url 'book_exchange_details' exchange.id %}" class="btn btn-default btn-sm">Szczegóły</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                        <h4>Brak wymian</h4>
+                    {% endif %}
+                </div>
+         </div>
+
+
     </div>
 
 {% endblock %}

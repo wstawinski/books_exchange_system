@@ -14,64 +14,72 @@
     </div>
     <div class="container">
         <div class="col-md-7">
-            <h2>Twoje książki na wymianę:</h2>
-            {% for book in books %}
-                <div class="row">
-                    <span class="btn-group">
-                        <form action="{% url 'user_panel_removeBook' %}" method="post">
-                            <a href="{% url 'book_details' book.id %}">
-                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
-                            </a>
+            <div class="panel panel-info">
+                <div class="panel-heading"> <h2>Twoje książki na wymianę:</h2></div>
+                <div class="panel-body">
+                {% for book in books %}
+                    <div class="row">
+                        <span class="btn-group">
+                            <form action="{% url 'user_panel_removeBook' %}" method="post">
+                                <a href="{% url 'book_details' book.id %}">
+                                    <span style="margin-left: 10px;" class="glyphicon glyphicon-info-sign" aria-hidden="true" title="Więcej informacji"></span>
+                                </a>
 
-                            &nbsp;&nbsp;{{ book.author }} - {{ book.title }}&nbsp;&nbsp;
+                                &nbsp;&nbsp;{{ book.author }} - {{ book.title }}&nbsp;&nbsp;
 
-                            {% csrf_token %}
-                            <input type="hidden" name="book_id" value="{{book.id}}" />
-                            <input type="hidden" name="type_id" value="1" />
-                            <button type="submit" class="close" data-toggle="tooltip" aria-label="Close" title="Usuń pozycję">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </form>
-                    </span>
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{book.id}}" />
+                                <input type="hidden" name="type_id" value="1" />
+                                <button type="submit" class="close" data-toggle="tooltip" aria-label="Close" title="Usuń pozycję">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                        </span>
+                    </div>
+                {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
 
         <div class="col-md-4">
-            <form id="forma" role="form" action="{% url 'user_panel_booksOwned' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+            <div class="panel panel-info" >
+                <div class="panel-heading"><h2>Dodaj książkę</h2></div>
+                <form id="forma" role="form" action="{% url 'user_panel_booksOwned' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
 
-                <h2>Dodaj książkę</h2>
+                    <div class="panel-body">
 
-                {{ form | crispy }}
+                        {{ form | crispy }}
 
-                <div id="div_id_image" class="form-group">
-                    <label for="id_image" class="control-label ">
-                        Zdjęcia
-                    </label>
-                    <div class="controls ">
-                        <span class="btn btn-primary btn-file">
-                            <input type="file" name="image" id="id_image" multiple  />
-                        </span>
+                        <div id="div_id_image" class="form-group">
+                            <label for="id_image" class="control-label ">
+                                Zdjęcia
+                            </label>
+                            <div class="controls ">
+                                <span class="btn btn-primary btn-file">
+                                    <input type="file" name="image" id="id_image" multiple  />
+                                </span>
+                            </div>
+                        </div>
+
+                         <label for="id_tag" class="control-label ">
+                                Tagi
+                         </label>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <span id="id_tag" class="btn btn-primary btn-file">
+                                    <select id="id_select" name="tags" multiple data-role="tagsinput">
+
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Dodaj</button>
                     </div>
-                </div>
-
-                 <label for="id_tag" class="control-label ">
-                        Tagi
-                 </label>
-
-                <div class="form-group">
-                    <div class="controls">
-                        <span id="id_tag" class="btn btn-primary btn-file">
-                            <select id="id_select" name="tags" multiple data-role="tagsinput">
-
-                            </select>
-                        </span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-default">Dodaj</button>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

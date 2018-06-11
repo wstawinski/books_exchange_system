@@ -7,10 +7,24 @@
 
 {% block content %}
     <div class="container">
-        <div class="jumbotron">
+        <div class="jumbotron" style="padding-bottom: 0px;">
             <div class="jumbotron-content">
                 {{ book.title }}
                 <h3>Autor: {{ book.author }}</h3>
+                <form role="form" action="{% url 'book_exchange' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="book_id" value="{{ book.id }}"/>
+                    <div style="text-align: center">
+                        <button type="submit" class="btn btn-primary" style="text-align: center">Zgłoś zainteresowanie</button>
+                    </div>
+                </form>
+                 <form role="form" action="{% url 'book_report' %}" method="get">
+                     {% csrf_token %}
+                     <input type="hidden" name="book_id" value="{{ book.id }}"/>
+                     <div style="text-align: right;">
+                         <button type="submit" class="btn btn-danger" >Zgłoś nadużycie</button>
+                     </div>
+                 </form>
             </div>
         </div>
     </div>
@@ -23,32 +37,26 @@
                 {% endif %}
 
                 {% if book.booktype_id == 1 %}
-                    <h4>Opis książki:</h4>
-                    <p class="text-justify">{{ book.description }}</p>
-                    <h4>Lokalizacja: {{ book.user.profile.location }}</h4>
-                    {% if book.user_id == user.id %}
-                        <h3>Książka udostępniona do wymiany przez Ciebie.</h3>
-                    {% else %}
-                        <h3>Książka udostępniona do wymiany przez użytkownika:
-                            <b><a href="{% url 'user_home' book.user.id %}">{{ book.user.username }}</a></b></h3>
-                        <form role="form" action="{% url 'book_exchange' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="book_id" value="{{ book.id }}"/>
-                            <br>
-                            <div style="text-align: center">
-                                <button type="submit" class="btn btn-default" style="text-align: center">Zgłoś zainteresowanie</button>
-                            </div>
-                        </form>
-
-                        <form role="form" action="{% url 'book_report' %}" method="get">
-                            {% csrf_token %}
-                            <input type="hidden" name="book_id" value="{{ book.id }}"/>
-                            <br>
-                            <div style="text-align: center">
-                                <button type="submit" class="btn btn-default" style="text-align: center">Zgłoś</button>
-                            </div>
-                        </form>
-                    {% endif %}
+                    <div class="panel panel-info" >
+                        <div class="panel-heading"><h4>Opis książki</h4></div>
+                        <div class="panel-body">
+                            <p class="text-justify">{{ book.description }}</p>
+                        </div>
+                        <div class="panel-heading"><h4>Lokalizacja</h4></div>
+                        <div class="panel-body">
+                            {{ book.user.profile.location }}
+                        </div>
+                    </div>
+                    <div class="panel panel-default" >
+                        <div class="panel-body">
+                            {% if book.user_id == user.id %}
+                                <h3>Książka udostępniona do wymiany przez Ciebie.</h3>
+                            {% else %}
+                                <h3>Książka udostępniona do wymiany przez użytkownika:
+                                    <b><a href="{% url 'user_home' book.user.id %}">{{ book.user.username }}</a></b></h3>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% elif book.booktype_id == 2 %}
                     <h4>Lokalizacja: {{ book.user.profile.location }}</h4>
                     {% if book.user_id == user.id %}
@@ -59,23 +67,24 @@
                     {% endif %}
                 {%  endif %}
             </div>
-        </div>
 
-        <div style="margin-bottom: 50px;" class="row">
-            <div class="col-md-8">
+
+
+            <div class="col-md-4">
                 {% for tag in bookTags %}
-
-                    <h2 style="display: inline;"><span class="label label-info">{{ tag.tagId.tag }}</span></h2>
-
+                    <div style="margin-bottom: 10px; display: inline-block;">
+                        <a href="/search/search?author=&title=&location=&tags={{ tag.tagId.tag }}" ><h2 style="display: inline;"><span class="label label-info">{{ tag.tagId.tag }}</span></h2></a>
+                    </div>
                 {% endfor %}
             </div>
-         </div>
+
+        </div>
 
         <div class="row">
             <div class="col-md-8">
                 {% for image in images %}
                     <a href="../{{ image.image.url }}">
-                        <img src="../{{ image.image.url }}" height="400px" width="600px">
+                        <img style="margin-bottom: 40px;" src="../{{ image.image.url }}"  width="600px">
                     </a>
                 {% endfor %}
             </div>

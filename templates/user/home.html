@@ -20,21 +20,32 @@
       </div>
     </div>
     <div class="container">
-        {% if user.id == user_profile.id %}
-            <h3>Twoje dane:</h3>
-        {% else %}
-            <h3>Dane użytkownika:</h3>
-        {% endif %}
-        <dl class="dl-horizontal">
-            <dt>Imię</dt>
-            <dd>{{ user_profile.first_name }}</dd>
-            <dt>Nazwisko</dt>
-            <dd>{{ user_profile.last_name }}</dd>
-            <dt>Adres email</dt>
-            <dd>{{ user_profile.email }}</dd>
-            <dt>Miasto</dt>
-            <dd>{{ user_profile.profile.location }}</dd>
-        </dl>
+        <div class="row">
+            <div class="col-md-6">
+             <div class="panel panel-info" >
+                 <div class="panel-heading">
+                     {% if user.id == user_profile.id %}
+                        <h4>Twoje dane:</h4>
+                     {% else %}
+                        <h4>Dane użytkownika:</h4>
+                     {% endif %}
+                 </div>
+                 <div class="panel-body">
+
+                    <dl class="dl-horizontal">
+                        <dt>Imię</dt>
+                        <dd>{{ user_profile.first_name }}</dd>
+                        <dt>Nazwisko</dt>
+                        <dd>{{ user_profile.last_name }}</dd>
+                        <dt>Adres email</dt>
+                        <dd>{{ user_profile.email }}</dd>
+                        <dt>Miasto</dt>
+                        <dd>{{ user_profile.profile.location }}</dd>
+                    </dl>
+                 </div>
+             </div>
+            </div>
+        </div>
     </div>
     <div class="container">
         <h3>Książki:</h3>

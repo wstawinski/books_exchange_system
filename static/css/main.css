@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.jumbotron {
+    background-color: #C9E6F4!important;
+}
+
 .dialog-box{
     margin: 10px 0 10px 0;
     padding: 20px 30px 20px 30px;

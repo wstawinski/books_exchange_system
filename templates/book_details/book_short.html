@@ -15,11 +15,26 @@
         </div>
     </div>
     <div class="container">
-        <div class="col-md-8">
-            {% if book.booktype_id == 1 %}
-                <h4>Opis książki:</h4>
-                <p class="text-justify">{{ book.description }}</p>
-            {%  endif %}
+        <div class="row">
+            <div class="col-md-8">
+                {% if book.booktype_id == 1 %}
+                      <div class="panel panel-info" >
+                            <div class="panel-heading"><h4>Opis książki</h4></div>
+                            <div class="panel-body">
+                                <p class="text-justify">{{ book.description }}</p>
+                            </div>
+                        </div>
+                {%  endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                {% for image in images %}
+                    <a href="../../../{{ image.image.url }}">
+                        <img style="margin-bottom: 40px;" src="../../../{{ image.image.url }}"  width="600px">
+                    </a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
